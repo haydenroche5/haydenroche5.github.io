@@ -6,18 +6,18 @@
     <description>Recent content on Hayden Roche</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 09 Dec 2019 11:18:41 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 15 Apr 2020 09:36:46 -0500</lastBuildDate>
     
 	<atom:link href="https://haydenroche5.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Using CNNs to Alleviate Local Traffic</title>
+      <title>Using CNNs to Improve Local Traffic Flow</title>
       <link>https://haydenroche5.github.io/posts/cnn_traffic_alleviation/</link>
       <pubDate>Wed, 15 Apr 2020 09:36:46 -0500</pubDate>
       
       <guid>https://haydenroche5.github.io/posts/cnn_traffic_alleviation/</guid>
-      <description>The 4th Ave Train Spotter is a piece of technology I helped develop with the good people at Cohub, a software company based out of Nashville, TN. My dad, Steve, and brother, Elliott, both help run the company. Cohub&amp;rsquo;s office is located in the Wedgewood-Houston neighborhood of Nashville, where railroad tracks cross over two roads, 4th Avenue and Chestnut Street. The trains passing through can be quick, or they can take their time.</description>
+      <description>The 4th Ave Train Spotter is a piece of technology I helped develop with the good people at Cohub, a software company based out of Nashville, TN. My dad, Steve, and brother, Elliott, both help run the company. Cohub&#39;s office is located in the Wedgewood-Houston neighborhood of Nashville, where railroad tracks cross over two roads, 4th Avenue and Chestnut Street. The trains passing through can be quick, or they can take their time.</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Mon, 09 Dec 2019 11:18:41 -0600</pubDate>
       
       <guid>https://haydenroche5.github.io/about/</guid>
-      <description>Welcome to my personal website! I&amp;rsquo;m Hayden Roche, a technologist based out of Chicago, IL. In September 2019, I left my job as a hardware/FPGA engineer at a high frequency trading firm and am currently studying computer vision and machine learning while I wait out a one year non-compete agreement. On this site, you&amp;rsquo;ll find guides and posts on various topics, including Linux (I&amp;rsquo;m an Ubuntu user) and my computer vision and ML journey.</description>
+      <description>Welcome to my personal website! I&#39;m Hayden Roche, a technologist based out of Chicago, IL. In September 2019, I left my job as a hardware/FPGA engineer at a high frequency trading firm and am currently studying computer vision and machine learning while I wait out a one year non-compete agreement. On this site, you&#39;ll find guides and posts on various topics, including Linux (I&#39;m an Ubuntu user) and my computer vision and ML journey.</description>
     </item>
     
   </channel>
