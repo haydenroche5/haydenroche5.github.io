@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Hayden Roche">
+    <meta name="description" content="My personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Preprocessing for Audio Classification: Trimming Silence"/>
+<meta name="twitter:description" content="Code for this post can be found here.
+I recently encountered an interesting problem while working on a system that can detect cat meows in a real-time audio stream. One of the critical components in this system is a machine learning model that can take in audio data and classify it as containing a meow or not. To train the model, I need a bunch of audio clips of meows and a bunch of clips of not-meow sounds."/>
+
+    <meta property="og:title" content="Preprocessing for Audio Classification: Trimming Silence" />
+<meta property="og:description" content="Code for this post can be found here.
+I recently encountered an interesting problem while working on a system that can detect cat meows in a real-time audio stream. One of the critical components in this system is a machine learning model that can take in audio data and classify it as containing a meow or not. To train the model, I need a bunch of audio clips of meows and a bunch of clips of not-meow sounds." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/" />
+<meta property="article:published_time" content="2020-05-11T00:00:00-05:00" />
+<meta property="article:modified_time" content="2020-05-11T00:00:00-05:00" />
+
+
+    
+      <base href="https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/">
+    
+    <title>
+  Preprocessing for Audio Classification: Trimming Silence · Hayden Roche
+</title>
+
+    
+      <link rel="canonical" href="https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://haydenroche5.github.io/css/coder.min.28d751104f30c16da1aa1bb04015cbe662cacfe0d1b01af4f2240ad58580069c.css" integrity="sha256-KNdREE8wwW2hqhuwQBXL5mLKz&#43;DRsBr08iQK1YWABpw=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://haydenroche5.github.io/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://haydenroche5.github.io/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://haydenroche5.github.io/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+
+  
+  
+  <body class="colorscheme-light">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://haydenroche5.github.io/">
+      Hayden Roche
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://haydenroche5.github.io/about/">About</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://haydenroche5.github.io/posts/">Posts</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Preprocessing for Audio Classification: Trimming Silence</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-05-11T00:00:00-05:00'>
+                May 11, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              11 minutes read
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        <p><em>Code for this post can be found <a href="https://github.com/haydenroche5/blog_code/blob/master/posts/trimming_silence/trimming_silence.ipynb">here</a>.</em></p>
+<p>I recently encountered an interesting problem while working on a system that can detect cat meows in a real-time audio stream. One of the critical components in this system is a machine learning model that can take in audio data and classify it as containing a meow or not. To train the model, I need a bunch of audio clips of meows and a bunch of clips of not-meow sounds. For meows, I&rsquo;ve been scraping YouTube cat compilations, using <a href="https://www.kaggle.com/mmoreaux/audio-cats-and-dogs">Kaggle</a>, and recording my own cats. For not-meows, I&rsquo;m using the <a href="https://urbansounddataset.weebly.com/urbansound8k.html">UrbanSound8K</a> dataset. Initially, I assembled 100 or so clips for each of the 2 classes, extracted some features (a topic for a future post), and fit a classifier. It achieved perfect accuracy in training and on my test set. I wrote a little script to get live audio from my laptop&rsquo;s mic and run it through my model in real-time. The predictions were all over the place. Eventually, I realized a major problem with my data after watching <a href="https://www.youtube.com/watch?v=OUHU7K_dD30&amp;t=118s">this video by Seth Adams</a>. Here are a few example waveforms from each class in my dataset.</p>
+<p><img src="images/class_waveform_comparison.png#center" alt=""></p>
+<p>Notice how the meow examples&rsquo; waveforms tend to taper at the ends, while the not-meows don&rsquo;t. It&rsquo;s like if you were building a dogs vs. cats binary image classifier and every image of a dog in your dataset had a 10 pixel wide black border around it. The easiest way to identify a dog would be to look for this border. Similarly, the easiest way to identify a meow in this case would be to check for the tapered ends. That&rsquo;s what happened to my model. Once I applied the envelope-based technique described in the video above, my model was no longer perfectly accurate in training. Let&rsquo;s check out the code for that envelope function.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="font-weight:bold">def</span> envelope(y, rate, threshold):
+    mask = []
+    y = pd.Series(y).apply(np.abs)
+    y_mean = y.rolling(window=int(rate/20),
+                       min_periods=1,
+                       center=True).max()
+    <span style="font-weight:bold">for</span> mean <span style="font-weight:bold">in</span> y_mean:
+        <span style="font-weight:bold">if</span> mean &gt; threshold:
+            mask.append(True)
+        <span style="font-weight:bold">else</span>:
+            mask.append(False)
+    <span style="font-weight:bold">return</span> mask, y_mean
+</code></pre></div><p>pd is Pandas and np is numpy. This function takes a sequence of audio samples (y), a sample rate (rate), and a magnitude threshold (threshold). First, we convert the audio samples to a Pandas Series and take their absolute value. We care about the magnitude of our samples, not their sign, as greater magnitude means louder volume. Next, we use Pandas&rsquo;s rolling function for Series objects to produce a rolling window over the audio data and take the max over each step of the window. It wasn&rsquo;t immediately obvious to me how rolling works, so I drew up this example.</p>
+<p><img src="images/sliding_window_transparent.png#center" alt=""></p>
+<p>window_size is the length of the window we&rsquo;ll slide over y. min_periods determines how many values must be in the window for an operation like max to return a value (i.e. not NaN). If center is False, the window starts with its rightmost slot over the first element of y, and ends with it over the last element of y. If center is True, the center slot is used instead.</p>
+<p>Back to the envelope function. We roll a window over of the absolute value of the samples, advancing one sample at a time, and taking the max at each step. The window size is a 20th of the sample rate. The sample rate is the number of samples per second, so we&rsquo;re looking at a 20th of a second of samples in each window. We set center to True and min_periods to 1, so the results should contain no NaNs. I&rsquo;m not sure why the result is called y_mean. I think y_envelope would be a better name.</p>
+<blockquote>
+<p>In physics and engineering, the envelope of an oscillating signal is a smooth curve outlining its extremes.</p>
+<p>— <a href="https://en.wikipedia.org/wiki/Envelope_(waves)">Wikipedia: Envelope (waves)</a></p>
+</blockquote>
+<p>At each step of the window, we are taking the greatest magnitude sample in the window, i.e., we are finding the extreme in each window. This series of values acts as an envelope over the signal. Let&rsquo;s see what this envelope looks like using the first meow example from earlier.</p>
+<p><img src="images/meow_with_envelope.png#center" alt=""></p>
+<p>Once we have an envelope, the function compares the envelope&rsquo;s values with the threshold and builds a mask that&rsquo;s the same length as y. If the envelope is less than the threshold, we mark it with False in the mask, and True otherwise. We return the envelope and the mask. The mask can then be used to cut off the quiet tails of the original audio. Wherever the mask is False, we remove the corresponding sample from the audio. Looking at the example above, it seems like a threshold of 0.05 would cut the tails pretty well. Let&rsquo;s try it.</p>
+<p><img src="images/trimming_method_1.png" alt=""></p>
+<p>Comparing the first plot and the last, you can see that we were able to trim about 0.22 seconds of silence from the audio. The ends of the waveform are less obviously tapered than before. We could try a higher threshold to attempt to make the shape even better. But, there&rsquo;s a problem with this method. This function is sensitive to the scale of the data. If the scale of the amplitude values is different between two audio clips, it&rsquo;s likely that a single threshold won&rsquo;t work well for both. For example, check out what this function with the same threshold does to a quiet clip of my cat Newton meowing.</p>
+<p><img src="images/destructive_trimming_method_1.png" alt=""></p>
+<p>Here, we trimmed the entire clip because the threshold was too high. To avoid having to adjust the threshold for every clip, the threshold needs to automatically adjust based on the scale of the data. One idea would be to set the threshold automatically based on the maximum value of the envelope for a given clip. For instance, we could say that anything below 10% of that maximum value is silence. But, rather than re-write the function to do this, librosa already has a solution.</p>
+<blockquote>
+<p>LibROSA is a python package for music and audio analysis. It provides the building blocks necessary to create music information retrieval systems.</p>
+<p>— <a href="https://librosa.github.io/librosa/">LibROSA documentation</a></p>
+</blockquote>
+<p>librosa&rsquo;s function is called <a href="https://librosa.github.io/librosa/generated/librosa.effects.trim.html">trim</a>, and it sort of does what I just described. First, some audio and DSP background is required, so I&rsquo;ll go over that first.</p>
+<h2 id="loudness">Loudness</h2>
+<blockquote>
+<p>There are many ways to measure the loudness, or volume, of an acoustic signal&hellip;.All share the same feature that when the amplitude is larger (all other things being equal) the signal gets louder.</p>
+<p>— <a href="http://web.mst.edu/~kosbar/ee3430/ff/fourier/notes_loudness.html">Kurt Kosbar&rsquo;s Digital Communications class lecture notes</a> (Missouri University of Science and Technology)</p>
+</blockquote>
+<p>In solving the problem of trimming silence from the beginning and end of an audio clip, we need some measure of loudness, so that we can say, &ldquo;Sounds below this loudness threshold are silence, clip them out.&rdquo; We&rsquo;ve already seen one metric: maximum magnitude over a short time interval. Another is average power over a short time interval.</p>
+<h2 id="average-power">Average Power</h2>
+<p>To calculate the average power of a discrete signal over some time interval, we square all the samples and take the arithmetic mean of those squares. Squaring the samples ensures that they&rsquo;re all positive so that negative and positive samples of equal magnitude contribute equally to the result. This makes sense; our ear can&rsquo;t distinguish between negative and positive audio samples of the same magnitude. If we only wanted a single value for the loudness of an entire audio clip, we could just calculate the average power over all the samples. If we do that with the first meow example from earlier (Meow 0), we get an average power of 0.0015. We often work with decibels when talking about power. This is the case in librosa&rsquo;s trim function, too.</p>
+<h2 id="decibels">Decibels</h2>
+<p>A bel is a unit of measurement comparing two quantities, such as power. If we are want to compare 2 power values, P1 and P2, in terms of bels, we compute log(P2/P1). If P2 was 10 times as big as P1, we&rsquo;d say P2 is 2 bels above P1. If the ratio was 100x, P2 would be 3 bels above P1. Increasing by a single bel is pretty huge jump. To make them more wieldy, we almost exclusively use decibels instead, which are 1/10 of a bel.</p>
+<p>So, how do we convert a power value like the one we got above to dB? I just said we need two power quantities to compute dB, but we only have one. That&rsquo;s where the idea of a reference value comes in. The reference value is what you set P1 to in the dB calculation of power. For instance, it&rsquo;s common to set P1 to 1e-3 and refer to the result as dBm, i.e. dB with a reference value of milliwatt (1e-3 watts). Setting the reference value appropriately is key to our usage of trim, which you&rsquo;ll see shortly.</p>
+<h2 id="how-librosaeffectstrim-works">How librosa.effects.trim Works</h2>
+<p>The functions accepts 5 parameters, which are well-described in the <a href="https://librosa.github.io/librosa/generated/librosa.effects.trim.html">code comments/documentation</a>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Parameters
+----------
+y : np.ndarray, shape=(n,) or (2,n)
+    Audio signal, can be mono or stereo
+top_db : number &gt; 0
+    The threshold (in decibels) below reference to consider as
+    silence
+ref : number or callable
+    The reference power.  By default, it uses `np.max` and compares
+    to the peak power in the signal.
+frame_length : int &gt; 0
+    The number of samples per analysis frame
+hop_length : int &gt; 0
+    The number of samples between analysis frames
+</code></pre></div><p>Most of the work trim does is handled by the helper function  _signal_to_frame_nonsilent, which takes all the same parameters as trim. Let&rsquo;s walk through how this function works.</p>
+<ul>
+<li>Convert the samples to mono, if there&rsquo;s more than one channel. To do this, we just average the samples of each channel together at each time step, collapsing N channels to 1 (see <a href="https://librosa.github.io/librosa/generated/librosa.core.to_mono.html">librosa.core.to_mono</a>).</li>
+<li>Compute the root mean square (RMS) of a bunch of different overlapping frames of the samples (see <a href="https://librosa.github.io/librosa/generated/librosa.feature.rms.html">librosa.feature.rms</a>). RMS is just the square root of average power.</li>
+<li>Those frames have frame_length samples each. Overlap is controlled by the hop_length parameter. If frame_length was 4 and hop_length was 4, there would be 0 overlap. If hop_length was instead 2, there would be 50% overlap. Overlapping frames is common in DSP: it has a smoothing effect and also <a href="https://en.wikipedia.org/wiki/Window_function#Overlapping_windows">helps mitigate loss of spectral information</a>, which we might be interested in if we&rsquo;re going to be working in the frequency domain.</li>
+<li>The rms function also centers the samples by adding frame_length // 2 padding to either end of the samples. The padding is reflective. You can read about numpy&rsquo;s reflect mode of padding <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.pad.html">here</a>. I don&rsquo;t think this step is strictly necessary since we&rsquo;re working in the time domain. Centering like this is useful if we&rsquo;re going to be working in the frequency domain because it prevents the data at the beginning and end of the samples from being underepresented, which is the same problem we have if we don&rsquo;t overlap our frames. You can read a bit more about this on <a href="https://en.wikipedia.org/wiki/Welch%27s_method#Definition_and_Procedure">Wikipedia&rsquo;s page for Welch&rsquo;s method</a>, a method for estimating the power at different frequencies in a signal. librosa&rsquo;s rms function works on spectrograms in addition to time domain samples, and librosa&rsquo;s <a href="https://librosa.github.io/librosa/generated/librosa.core.stft.html">short time Fourier transform (STFT)</a> method defaults to frame overlapping and centering the data before taking the STFT. I suspect this preprocessing, centering and overlapping, is done in the time domain case so that the RMS results are similar to what you&rsquo;d get if you passed the signal&rsquo;s spectrogram instead.</li>
+<li>After centering and framing the data, rms computes the power of each frame in the same way I did earlier, by squaring all the samples in each frame and taking the mean of those squares.</li>
+<li>rms returns the square root of power, which is the definition of RMS.</li>
+<li>signal_to_frame_nonsilent converts this RMS value back to power by squaring it.</li>
+<li>The power of each frame is then converted to dB, using a reference value equal to the maximum power across all frames. This is the key to making the trimming insensitive to the scale of the data.</li>
+<li>_signal_to_frame_nonsilent then compares each frame&rsquo;s dB with negative top_db. This is effectively asking, &ldquo;is the power in this frame greater than top_db below the maximum power?&rdquo; We ask every frame this same question and record the results in a mask, where True means the power was enough to consider the frame nonsilent (defined as negative top_db), and False means the frame is silent.</li>
+</ul>
+<p>From here, trim uses this mask to compute where the audio starts and ends, clips that non-silent interval out of the audio, and returns the clip.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>librosa&rsquo;s trim isn&rsquo;t sensitive to the scale of the data. The threshold depends on the maximum average power across a bunch of frames of the audio, so it adapts depending on the particular audio clip, rather than being a fixed value. Let&rsquo;s see how trim does on Meow 0 and the quiet Newton meow, which was destroyed by the prior method. I&rsquo;ll set top_db to 12.</p>
+<p><img src="images/librosa_trim_examples.png" alt=""></p>
+<p>Both were trimmed nicely, and we only had to set the threshold once (12 dB) despite the different amplitude scales between the two clips.</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>A big thanks to Seth Adams for his <a href="https://github.com/seth814/Audio-Classification">audio classification code</a> and <a href="https://www.youtube.com/watch?v=RMfeYitdO-c&amp;list=PLhA3b2k8R3t0SYW_MhWkWS5fWg-BlYqWn">YouTube series</a>. This is the best material I&rsquo;ve found online for getting started with audio classification, if you&rsquo;ve already got some deep learning experience. Thanks to Kurt Kosbar at Missouri S&amp;T for his lecture notes on loudness.</p>
+
+      </div>
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+     © 2020
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Hayden Roche</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 15 Apr 2020 09:36:46 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 11 May 2020 00:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://haydenroche5.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Preprocessing for Audio Classification: Trimming Silence</title>
+      <link>https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/</guid>
+      <description>Code for this post can be found here.
+I recently encountered an interesting problem while working on a system that can detect cat meows in a real-time audio stream. One of the critical components in this system is a machine learning model that can take in audio data and classify it as containing a meow or not. To train the model, I need a bunch of audio clips of meows and a bunch of clips of not-meow sounds.</description>
+    </item>
     
     <item>
       <title>Using CNNs to Improve Local Traffic Flow</title>
@@ -17,7 +27,7 @@
       <pubDate>Wed, 15 Apr 2020 09:36:46 -0500</pubDate>
       
       <guid>https://haydenroche5.github.io/posts/cnn_traffic_alleviation/</guid>
-      <description>The 4th Ave Train Spotter is a piece of technology I helped develop with the good people at Cohub, a software company based out of Nashville, TN. My dad, Steve, and brother, Elliott, both help run the company. Cohub&#39;s office is located in the Wedgewood-Houston neighborhood of Nashville, where railroad tracks cross over two roads, 4th Avenue and Chestnut Street. The trains passing through can be quick, or they can take their time.</description>
+      <description>The 4th Ave Train Spotter is a piece of technology I helped develop with the good people at Cohub, a software company based out of Nashville, TN. My dad, Steve, and brother, Elliott, both help run the company. Cohub&amp;rsquo;s office is located in the Wedgewood-Houston neighborhood of Nashville, where railroad tracks cross over two roads, 4th Avenue and Chestnut Street. The trains passing through can be quick, or they can take their time.</description>
     </item>
     
   </channel>
