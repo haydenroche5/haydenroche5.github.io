@@ -3,6 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://haydenroche5.github.io/tags/audio/</loc>
+    <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/dsp/</loc>
+    <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/librosa/</loc>
+    <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/machine-learning/</loc>
+    <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://haydenroche5.github.io/posts/</loc>
     <lastmod>2020-05-11T00:00:00-05:00</lastmod>
   </url>
@@ -10,6 +30,26 @@
   <url>
     <loc>https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/</loc>
     <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/</loc>
+    <lastmod>2020-05-11T00:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/cnn/</loc>
+    <lastmod>2020-04-15T09:36:46-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/computer-vision/</loc>
+    <lastmod>2020-04-15T09:36:46-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://haydenroche5.github.io/tags/deep-learning/</loc>
+    <lastmod>2020-04-15T09:36:46-05:00</lastmod>
   </url>
   
   <url>
@@ -29,10 +69,6 @@
   
   <url>
     <loc>https://haydenroche5.github.io/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>https://haydenroche5.github.io/tags/</loc>
   </url>
   
 </urlset>

@@ -6,9 +6,73 @@
     <description>Recent content in Tags on Hayden Roche</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <lastBuildDate>Mon, 11 May 2020 00:00:00 -0500</lastBuildDate>
     
 	<atom:link href="https://haydenroche5.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>audio</title>
+      <link>https://haydenroche5.github.io/tags/audio/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/audio/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DSP</title>
+      <link>https://haydenroche5.github.io/tags/dsp/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/dsp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>librosa</title>
+      <link>https://haydenroche5.github.io/tags/librosa/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/librosa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>machine learning</title>
+      <link>https://haydenroche5.github.io/tags/machine-learning/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CNN</title>
+      <link>https://haydenroche5.github.io/tags/cnn/</link>
+      <pubDate>Wed, 15 Apr 2020 09:36:46 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/cnn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>computer vision</title>
+      <link>https://haydenroche5.github.io/tags/computer-vision/</link>
+      <pubDate>Wed, 15 Apr 2020 09:36:46 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/computer-vision/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep learning</title>
+      <link>https://haydenroche5.github.io/tags/deep-learning/</link>
+      <pubDate>Wed, 15 Apr 2020 09:36:46 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/tags/deep-learning/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>librosa on Hayden Roche</title>
+    <link>https://haydenroche5.github.io/tags/librosa/</link>
+    <description>Recent content in librosa on Hayden Roche</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 11 May 2020 00:00:00 -0500</lastBuildDate>
+    
+	<atom:link href="https://haydenroche5.github.io/tags/librosa/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Preprocessing for Audio Classification: Trimming Silence</title>
+      <link>https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/</link>
+      <pubDate>Mon, 11 May 2020 00:00:00 -0500</pubDate>
+      
+      <guid>https://haydenroche5.github.io/posts/audio_preprocessing_trim_silence/</guid>
+      <description>Code for this post can be found here.
+I recently encountered an interesting problem while working on a system that can detect cat meows in a real-time audio stream. One of the critical components in this system is a machine learning model that can take in audio data and classify it as containing a meow or not. To train the model, I need a bunch of audio clips of meows and a bunch of clips of not-meow sounds.</description>
+    </item>
+    
+  </channel>
+</rss>
